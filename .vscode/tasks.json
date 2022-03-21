@@ -8,7 +8,7 @@
             "detail": "使用Flex和GCC将.l文件编译为可执行文件",
             "command": "make",
             "args": [
-                "build"
+                "flex-build"
             ],
             "problemMatcher": {
                 "owner": "l",
