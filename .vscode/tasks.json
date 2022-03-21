@@ -10,6 +10,10 @@
             "args": [
                 "flex-build"
             ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": {
                 "owner": "l",
                 "fileLocation": [
@@ -23,10 +27,21 @@
                     "message": 3
                 }
             },
+        },
+        {
+            "label": "Build Test",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "test"
+            ],
             "group": {
-                "kind": "build",
+                "kind": "test",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
         }
     ]
 }

@@ -1,7 +1,8 @@
 CC = /usr/bin/gcc
 FLEX = /usr/bin/flex
 
-CFLAGS = -lfl
+CFLAGS = -Wall
+FLEX_CFLAGS = $(CFLAGS) -lfl
 
 # .l文件路径
 FLEX_FILE ?= C--lexical.l
@@ -21,6 +22,7 @@ define echo_success
     @echo "\033[32m$(1)\033[0m"
 endef
 
+all: flex-build
 
 # 将.l文件单独编译为可执行文件
 flex-build:
@@ -30,5 +32,9 @@ flex-build:
 	@echo
 
 	$(call echo_info,"Compiling $(OUT).yy.c to $(OUT) ...")
-	$(CC) $(CFLAGS) $(DIR)/$(OUT).yy.c -o $(DIR)/$(OUT)
+	$(CC) $(FLEX_CFLAGS) $(DIR)/$(OUT).yy.c -o $(DIR)/$(OUT)
 	$(call echo_success,"Done.")
+
+.PHONY: test
+test:
+	$(CC) $(CFLAGS) -o test/test_syntax_tree test/test_syntax_tree.c syntax_tree.c lib/CuTest.c
