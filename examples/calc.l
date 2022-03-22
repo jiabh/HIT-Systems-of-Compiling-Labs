@@ -9,7 +9,7 @@ digit [0-9]
 
 %%
 
-{digit}* { yylval = atoi(yytext); return INT; }
+{digit}* { yylval.ival = atoi(yytext); return INT; }
 "+"	{ return ADD; }
 "-"	{ return SUB; }
 "*"	{ return MUL; }

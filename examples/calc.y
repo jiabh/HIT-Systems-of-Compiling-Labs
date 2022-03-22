@@ -13,12 +13,14 @@
 }
 
 %token<ival> INT
-%token ADD SUB MUL DIV
+%token<ival> ADD SUB MUL DIV
+
+%type<ival> Calc Exp Factor Term
 
 %start Calc
 
 %%
-Calc:
+Calc: {;}
     | Exp { printf("= %d\n", $1); }
 ;
 Exp: Factor

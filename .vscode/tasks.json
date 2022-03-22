@@ -4,32 +4,50 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Compile Flex",
-            "detail": "使用Flex和GCC将.l文件编译为可执行文件",
+            "label": "Build C--parser",
+            "detail": "编译生成C--parser",
             "command": "make",
             "args": [
-                "flex-build"
+                "parser"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": {
-                "owner": "l",
-                "fileLocation": [
-                    "relative",
-                    "${workspaceRoot}"
-                ],
-                "pattern": {
-                    "regexp": "^(.*):(\\d+):\\s+(.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "message": 3
-                }
-            },
+            "problemMatcher": [
+                { // bison matcher
+                    "owner": "y",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceRoot}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+).(\\d+)-\\d+:\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "message": 4
+                    }
+                },
+                { // flex matcher
+                    "owner": "l",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceRoot}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "message": 3
+                    }
+                },
+                "$gcc"
+            ]
         },
         {
-            "label": "Build Test",
+            "label": "Run Test",
+            "detail": "运行C--parser的测试用例",
             "type": "shell",
             "command": "make",
             "args": [

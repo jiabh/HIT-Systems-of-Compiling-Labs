@@ -1,40 +1,63 @@
 CC = /usr/bin/gcc
 FLEX = /usr/bin/flex
+BISON = /usr/bin/bison
 
 CFLAGS = -Wall
 FLEX_CFLAGS = $(CFLAGS) -lfl
 
-# .l文件路径
-FLEX_FILE ?= C--lexical.l
 
-# Working Directory
-DIR = $(shell dirname $(FLEX_FILE))
-
-# 输出的可执行程序名
-OUT = $(shell basename $(FLEX_FILE) .l)
-
-
+# 日志输出函数
 define echo_info
     @echo "\033[34m$(1)\033[0m"
 endef
-
 define echo_success
     @echo "\033[32m$(1)\033[0m"
 endef
 
-all: flex-build
 
-# 将.l文件单独编译为可执行文件
-flex-build:
-	$(call echo_info,"Compiling $(OUT).l to $(OUT).yy.c ...")
-	$(FLEX) -o $(DIR)/$(OUT).yy.c $(FLEX_FILE)
-	$(call echo_success,"Done.")
-	@echo
-
-	$(call echo_info,"Compiling $(OUT).yy.c to $(OUT) ...")
-	$(CC) $(FLEX_CFLAGS) $(DIR)/$(OUT).yy.c -o $(DIR)/$(OUT)
+# 编译C--分析器
+parser:
+	$(call echo_info,"Generating syntax analyzer...")
+	$(BISON) -d C--syntax.y
+	$(call echo_info,"Generating lexical analyzer...")
+	$(FLEX) -o C--lexical.yy.c C--lexical.l
+	$(call echo_info,"GCC compiling...")
+	$(CC) $(FLEX_CFLAGS) -o C--parser main.c C--syntax.tab.c syntax_tree.c
 	$(call echo_success,"Done.")
 
-.PHONY: test
+
+.PHONY: examples test clean
+
+# 编译全部示例代码
+examples:
+	$(call echo_info,"Building count...")
+	cd examples && $(FLEX) -o count.yy.c count.l
+	cd examples && $(CC) $(FLEX_CFLAGS) count.yy.c -o count
+	$(call echo_success,"Done.")
+
+	$(call echo_info,"Building calc...")
+	cd examples && $(BISON) -d calc.y
+	cd examples && $(FLEX) -o calc.yy.c calc.l
+	cd examples && $(CC) $(FLEX_CFLAGS) -o calc calc.tab.c calc.yy.c
+	$(call echo_success,"Done.")
+
+# 运行单元测试
 test:
+	$(call echo_info,"Compiling test_syntax_tree...")
 	$(CC) $(CFLAGS) -o test/test_syntax_tree test/test_syntax_tree.c syntax_tree.c lib/CuTest.c
+	$(call echo_success,"Done.")
+	$(call echo_info,"Running test_syntax_tree...")
+	./test/test_syntax_tree
+	$(call echo_info,"Cleaning test_syntax_tree...")
+	rm ./test/test_syntax_tree
+	$(call echo_success,"Done.")
+
+# 删除所有生成的文件
+clean:
+	$(call echo_info,"Cleaning C--parser...")
+	rm -f C--parser C--lexical.yy.c C--syntax.tab.c C--syntax.tab.h
+	$(call echo_info,"Cleaning examples...")
+	cd examples && rm -f \
+		calc calc.yy.c calc.tab.c calc.tab.h \
+		count count.yy.c count.tab.c count.tab.h
+	$(call echo_success,"Done.")

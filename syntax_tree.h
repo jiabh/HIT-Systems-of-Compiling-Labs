@@ -1,3 +1,6 @@
+#ifndef _SYNTAX_TREE_H_
+#define _SYNTAX_TREE_H_
+
 #include <stdio.h>
 
 /**
@@ -57,3 +60,5 @@ void free_syn_tree(SyntaxNode *root);
  * @param root 树根节点
  */
 void preorder_traversal(FILE *stream, SyntaxNode *root);
+
+#endif
