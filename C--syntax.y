@@ -62,6 +62,10 @@
 %left '!'
 %left '(' ')' '[' ']' '.'
 
+// 通过定义优先级更低的LOWER_THAN_ELSE运算符，使ELSE优先级：移入 > 归约
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
+
 %%
 
 /* High-level Definitions */
@@ -130,7 +134,7 @@ StmtList: Stmt StmtList { $$ = create_syn_node("StmtList", @$.first_line, ENUM_E
 Stmt: Exp ';' { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 2, $1, $2); }
     | CompSt { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 1, $1); }
     | RETURN Exp ';' { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 3, $1, $2, $3); }
-    | IF '(' Exp ')' Stmt { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 5, $1, $2, $3, $4, $5); }
+    | IF '(' Exp ')' Stmt  %prec LOWER_THAN_ELSE { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 5, $1, $2, $3, $4, $5); }
     | IF '(' Exp ')' Stmt ELSE Stmt { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 7, $1, $2, $3, $4, $5, $6, $7); }
     | WHILE '(' Exp ')' Stmt { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 5, $1, $2, $3, $4, $5); }
 ;
