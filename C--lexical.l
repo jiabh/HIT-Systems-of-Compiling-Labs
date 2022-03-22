@@ -24,13 +24,14 @@
     #define ESC_END       "\033[0m"
     #define COLOR_DEBUG    "36;40;1m"
     
+#ifdef DEBUG
     /**
      * 向stdout打印调试信息
      * 
      * @param format 格式化字符串 
      * @param ... 填充值
      */
-    void DEBUG(const char *format, ...) {
+    void printf_lexical_debug(const char *format, ...) {
         va_list args;
         va_start(args, format);
 
@@ -40,6 +41,9 @@
 
         va_end(args);
     }
+#else
+    void printf_lexical_debug(const char *format, ...) {}
+#endif
 
 
     /**
@@ -98,90 +102,90 @@ ID {letter}({dight}|{letter})*
 "]" |
 "{" |
 "}" {
-    DEBUG(yytext);
+    printf_lexical_debug(yytext);
     CREATE_TOKEN_NODE(yytext, yylloc.first_line, ENUM_OTHER)
     strcpy(yylval.node->strval, yytext);
     return yytext[0];
 }
 
 "&&" {
-    DEBUG(yytext);
+    printf_lexical_debug(yytext);
     CREATE_TOKEN_NODE(yytext, yylloc.first_line, ENUM_OTHER)
     return AND;
 }
 
 "||" {
-    DEBUG(yytext);
+    printf_lexical_debug(yytext);
     CREATE_TOKEN_NODE(yytext, yylloc.first_line, ENUM_OTHER)
     return OR;
 }
 
 {RELOP} {
-    DEBUG("RELOP");
+    printf_lexical_debug("RELOP");
     CREATE_TOKEN_NODE("RELOP", yylloc.first_line, ENUM_OTHER)
     return RELOP;
 }
 
 {TYPE} {
-    DEBUG("TYPE");
+    printf_lexical_debug("TYPE");
     CREATE_TOKEN_NODE("TYPE", yylloc.first_line, ENUM_TYPE)
     strcpy(yylval.node->strval, yytext);
     return TYPE;
 }
 
 {STRUCT} {
-    DEBUG("STRUCT");
+    printf_lexical_debug("STRUCT");
     CREATE_TOKEN_NODE("STRUCT", yylloc.first_line, ENUM_OTHER)
     return STRUCT;
 }
 
 {RETURN} {
-    DEBUG("RETURN");
+    printf_lexical_debug("RETURN");
     CREATE_TOKEN_NODE("RETURN", yylloc.first_line, ENUM_OTHER)
     return RETURN;
 }
 
 {IF} {
-    DEBUG("IF");
+    printf_lexical_debug("IF");
     CREATE_TOKEN_NODE("IF", yylloc.first_line, ENUM_OTHER)
     return IF;
 }
 
 {ELSE} {
-    DEBUG("ELSE");
+    printf_lexical_debug("ELSE");
     CREATE_TOKEN_NODE("ELSE", yylloc.first_line, ENUM_OTHER)
     return ELSE;
 }
 
 {WHILE} {
-    DEBUG("WHILE");
+    printf_lexical_debug("WHILE");
     CREATE_TOKEN_NODE("WHILE", yylloc.first_line, ENUM_OTHER)
     return WHILE;
 }
 
 {INT} {
-    DEBUG("INT");
+    printf_lexical_debug("INT");
     CREATE_TOKEN_NODE("INT", yylloc.first_line, ENUM_INT)
     yylval.node->intval = atoi(yytext);
     return INT;
 }
 
 {FLOAT} {
-    DEBUG("FLOAT");
+    printf_lexical_debug("FLOAT");
     CREATE_TOKEN_NODE("FLOAT", yylloc.first_line, ENUM_FLOAT)
     yylval.node->floatval = (float) atof(yytext);
     return FLOAT;
 }
 
 {ID} {
-    DEBUG("ID");
+    printf_lexical_debug("ID");
     CREATE_TOKEN_NODE("ID", yylloc.first_line, ENUM_ID)
     strcpy(yylval.node->strval, yytext);
     return ID;
 }
 
 \n {
-    DEBUG("\\n");
+    printf_lexical_debug("\\n");
     yycolumn = 1;
 }
 

@@ -25,6 +25,15 @@ parser:
 	$(CC) $(FLEX_CFLAGS) -o C--parser main.c C--syntax.tab.c syntax_tree.c
 	$(call echo_success,"Done.")
 
+parser-debug:
+	$(call echo_info,"Generating syntax analyzer...")
+	$(BISON) -d -t -v C--syntax.y
+	$(call echo_info,"Generating lexical analyzer...")
+	$(FLEX) -d -o C--lexical.yy.c C--lexical.l
+	$(call echo_info,"GCC compiling...")
+	$(CC) $(FLEX_CFLAGS) -D DEBUG -D YYDEBUG=0 \
+		-o C--parser-debug main.c C--syntax.tab.c syntax_tree.c
+	$(call echo_success,"Done.")
 
 .PHONY: examples test clean
 
@@ -55,7 +64,7 @@ test:
 # 删除所有生成的文件
 clean:
 	$(call echo_info,"Cleaning C--parser...")
-	rm -f C--parser C--lexical.yy.c C--syntax.tab.c C--syntax.tab.h
+	rm -f C--parser C--parser-debug C--lexical.yy.c C--syntax.tab.c C--syntax.tab.h C--syntax.output
 	$(call echo_info,"Cleaning examples...")
 	cd examples && rm -f \
 		calc calc.yy.c calc.tab.c calc.tab.h \
