@@ -25,6 +25,8 @@ int main(int argc, char **argv)
     yyrestart(f);
     yyparse();
     
+    preorder_traversal(stdout, root, 0);
+    
     free_syn_tree(root);
     return 0;
 }

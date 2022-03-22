@@ -100,6 +100,7 @@ ID {letter}({dight}|{letter})*
 "}" {
     DEBUG(yytext);
     CREATE_TOKEN_NODE(yytext, yylloc.first_line, ENUM_OTHER)
+    strcpy(yylval.node->strval, yytext);
     return yytext[0];
 }
 
@@ -124,6 +125,7 @@ ID {letter}({dight}|{letter})*
 {TYPE} {
     DEBUG("TYPE");
     CREATE_TOKEN_NODE("TYPE", yylloc.first_line, ENUM_TYPE)
+    strcpy(yylval.node->strval, yytext);
     return TYPE;
 }
 

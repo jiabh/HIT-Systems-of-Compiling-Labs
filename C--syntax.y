@@ -104,6 +104,7 @@ Tag: ID { $$ = create_syn_node("Tag", @$.first_line, ENUM_ERROR, 1, $1); }
 /* Declarators */
 VarDec: ID { $$ = create_syn_node("VarDec", @$.first_line, ENUM_ERROR, 1, $1); }
     | VarDec '[' INT ']' { $$ = create_syn_node("VarDec", @$.first_line, ENUM_ERROR, 4, $1, $2, $3, $4); }
+    | error ']' {;}
 ;
 
 FunDec: ID '(' VarList ')' { $$ = create_syn_node("FunDec", @$.first_line, ENUM_ERROR, 4, $1, $2, $3, $4); }

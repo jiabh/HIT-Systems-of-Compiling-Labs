@@ -21,7 +21,7 @@ typedef enum
  */
 typedef struct syntax_node
 {
-    char *name;    // 节点名，输出节点时用
+    char name[32]; // 节点名，输出节点时用
     int lineno;    // 所在行号
     int child_cnt; // 孩子个数
 
@@ -58,7 +58,8 @@ void free_syn_tree(SyntaxNode *root);
  * 销毁一棵语法树
  * @param stream 输出流，将向此处输出语法树
  * @param root 树根节点
+ * @param deep 传入0
  */
-void preorder_traversal(FILE *stream, SyntaxNode *root);
+void preorder_traversal(FILE *stream, SyntaxNode *root, int deep);
 
 #endif
