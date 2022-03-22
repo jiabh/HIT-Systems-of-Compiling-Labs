@@ -33,8 +33,12 @@
         {
             "id": "inputFile",
             "description": "输入文件的名称",
-            "type": "promptString",
-            "default": "input"
+            "type": "pickString",
+            "options": [
+                "test-res/1.1.c",
+                "test-res/1.2.c",
+            ],
+            "default": "test-res/1.2.c"
         }
     ]
 }

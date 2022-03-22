@@ -183,10 +183,6 @@ ID {letter}({dight}|{letter})*
     yycolumn = 1;
 }
 
-. { fprintf(stderr, "Error type A at Line %d: Mysterious characters \'%s\'\n", yylineno, yytext); }
+. { fprintf(stderr, "Error type A at Line %d: Mysterious character \'%s\'\n", yylineno, yytext); }
 
 %%
-
-int yyerror(char* msg){
-    fprintf(stderr, "Error type B at line %d: %s.\n", yylineno, msg);
-}

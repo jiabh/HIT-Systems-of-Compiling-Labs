@@ -4,7 +4,7 @@
     #include "syntax_tree.h"
 
     int yylex(void);
-    int yyerror(char* s);
+    int yyerror(char* msg);
 
     SyntaxNode *root;
 %}
@@ -179,3 +179,7 @@ Args: Exp ',' Args { $$ = create_syn_node("Args", @$.first_line, ENUM_ERROR, 3, 
 
 %%
 
+int yyerror(char* msg) {
+    // 输出错误信息
+    fprintf(stderr, "Error type B at line %d: %s.\n", yylineno, msg);
+}
