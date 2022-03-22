@@ -4,11 +4,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build C--parser",
-            "detail": "编译生成C--parser",
+            "label": "Build C--parser(debug)",
+            "detail": "编译生成C--parser(debug)",
             "command": "make",
             "args": [
-                "parser"
+                "parser-debug"
             ],
             "group": {
                 "kind": "build",

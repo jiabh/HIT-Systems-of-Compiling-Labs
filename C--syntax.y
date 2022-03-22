@@ -3,6 +3,10 @@
     #include"C--lexical.yy.c"
     #include "syntax_tree.h"
 
+
+    extern int syn_error_cnt; // 语法错误个数
+
+
     int yylex(void);
     int yyerror(char* msg);
 

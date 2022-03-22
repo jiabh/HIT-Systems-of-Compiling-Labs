@@ -10,6 +10,9 @@
     #include "C--syntax.tab.h"
 
 
+    extern int lex_error_cnt; // 词法错误个数
+
+
     /* 维护语法单元的位置信息，来自书P31 */
     int yycolumn = 1;
     #define YY_USER_ACTION \
@@ -188,6 +191,9 @@ ID {letter}({dight}|{letter})*
     yycolumn = 1;
 }
 
-. { fprintf(stderr, "Error type A at Line %d: Mysterious character \'%s\'\n", yylineno, yytext); }
+. {
+    fprintf(stderr, "Error type A at Line %d: Mysterious character \'%s\'\n", yylineno, yytext);
+    lex_error_cnt++;
+}
 
 %%

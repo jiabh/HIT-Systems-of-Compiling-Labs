@@ -7,6 +7,9 @@ extern int yylineno;
 extern int yyparse();
 extern void yyrestart(FILE *);
 
+int lex_error_cnt = 0; // 词法错误个数
+int syn_error_cnt = 0; // 语法错误个数
+
 int main(int argc, char **argv)
 {
     if (argc <= 1)
@@ -24,9 +27,12 @@ int main(int argc, char **argv)
 
     yyrestart(f);
     yyparse();
-    
-    preorder_traversal(stdout, root, 0);
-    
+
+#ifndef DEBUG
+    if (!lex_error_cnt && !syn_error_cnt)
+#endif
+        preorder_traversal(stdout, root, 0);
+
     free_syn_tree(root);
     return 0;
 }
