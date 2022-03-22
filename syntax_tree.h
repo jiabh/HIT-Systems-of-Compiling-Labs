@@ -13,7 +13,7 @@ typedef enum
     ENUM_ID,
     ENUM_TYPE,
     ENUM_OTHER, // 其余语法单元处理方式相同，标识为同一单元
-    ENUM_ERROR  // 语法错误的标识
+    ENUM_ERROR  // 节点不是token
 } ENUM_NODE_TYPE;
 
 /**

@@ -71,7 +71,7 @@ Program: ExtDefList {
 };
 
 ExtDefList: ExtDef ExtDefList { $$ = create_syn_node("ExtDefList", @$.first_line, ENUM_ERROR, 2, $1, $2); }
-    | { $$ = create_syn_node("ExtDefList", @$.first_line, ENUM_OTHER, 0); }
+    | { $$ = create_syn_node("ExtDefList", @$.first_line, ENUM_ERROR, 0); }
 ;
 
 ExtDef: Specifier ExtDecList ';' { $$ = create_syn_node("ExtDef", @$.first_line, ENUM_ERROR, 3, $1, $2, $3); }
@@ -94,7 +94,7 @@ StructSpecifier: STRUCT OptTag '{' DefList '}' { $$ = create_syn_node("StructSpe
 ;
 
 OptTag: ID { $$ = create_syn_node("OptTag", @$.first_line, ENUM_ERROR, 1, $1); }
-    | { $$ = create_syn_node("OptTag", @$.first_line, ENUM_OTHER, 0); }
+    | { $$ = create_syn_node("OptTag", @$.first_line, ENUM_ERROR, 0); }
 ;
 
 Tag: ID { $$ = create_syn_node("Tag", @$.first_line, ENUM_ERROR, 1, $1); }
@@ -124,7 +124,7 @@ CompSt: '{' DefList StmtList '}' { $$ = create_syn_node("CompSt", @$.first_line,
 ;
 
 StmtList: Stmt StmtList { $$ = create_syn_node("StmtList", @$.first_line, ENUM_ERROR, 2, $1, $2); }
-    | { $$ = create_syn_node("StmtList", @$.first_line, ENUM_OTHER, 0); }
+    | { $$ = create_syn_node("StmtList", @$.first_line, ENUM_ERROR, 0); }
 ;
 
 Stmt: Exp ';' { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 2, $1, $2); }
@@ -138,13 +138,13 @@ Stmt: Exp ';' { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 2, $1, $
 
 /* Local Definitions */
 DefList: Def DefList { $$ = create_syn_node("DefList", @$.first_line, ENUM_ERROR, 2, $1, $2); }
-    | { $$ = create_syn_node("DefList", @$.first_line, ENUM_OTHER, 0); }
+    | { $$ = create_syn_node("DefList", @$.first_line, ENUM_ERROR, 0); }
 ;
 
 Def: Specifier DecList ';' { $$ = create_syn_node("Def", @$.first_line, ENUM_ERROR, 3, $1, $2, $3); }
 ;
 
-DecList: Dec { $$ = create_syn_node("DecList", @$.first_line, ENUM_ERROR, 1); }
+DecList: Dec { $$ = create_syn_node("DecList", @$.first_line, ENUM_ERROR, 1, $1); }
     | Dec ',' DecList { $$ = create_syn_node("DecList", @$.first_line, ENUM_ERROR, 3, $1, $2, $3); }
 ;
 

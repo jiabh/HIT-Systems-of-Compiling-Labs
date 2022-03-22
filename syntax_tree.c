@@ -65,6 +65,8 @@ void preorder_traversal(FILE *stream, SyntaxNode *root, int deep)
     {
         switch (root->node_type)
         {
+        case ENUM_ERROR: // 空产生式，不输出任何字符
+            break;
         case ENUM_INT:
             _PRINT_INDENTATION
             fprintf(stream, "INT: %d\n", root->intval);
@@ -82,11 +84,8 @@ void preorder_traversal(FILE *stream, SyntaxNode *root, int deep)
             fprintf(stream, "TYPE: %s\n", root->strval);
             break;
         case ENUM_OTHER:
-            if (strlen(root->strval))
-            {
-                _PRINT_INDENTATION
-                fprintf(stream, "%s\n", root->strval);
-            } // 否则为空产生式，不输出任何字符
+            _PRINT_INDENTATION
+            fprintf(stream, "%s\n", root->name);
             break;
         default:
             break;

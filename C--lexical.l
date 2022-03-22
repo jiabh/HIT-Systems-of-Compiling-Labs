@@ -104,7 +104,6 @@ ID {letter}({dight}|{letter})*
 "}" {
     printf_lexical_debug(yytext);
     CREATE_TOKEN_NODE(yytext, yylloc.first_line, ENUM_OTHER)
-    strcpy(yylval.node->strval, yytext);
     return yytext[0];
 }
 
