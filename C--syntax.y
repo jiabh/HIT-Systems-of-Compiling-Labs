@@ -117,6 +117,7 @@ VarDec: ID { $$ = create_syn_node("VarDec", @$.first_line, ENUM_ERROR, 1, $1); }
 
 FunDec: ID '(' VarList ')' { $$ = create_syn_node("FunDec", @$.first_line, ENUM_ERROR, 4, $1, $2, $3, $4); }
     | ID '(' ')' { $$ = create_syn_node("FunDec", @$.first_line, ENUM_ERROR, 3, $1, $2, $3); }
+    | ID error ';' { syn_error_cnt++; }
 ;
 
 VarList: ParamDec ',' VarList { $$ = create_syn_node("VarList", @$.first_line, ENUM_ERROR, 3, $1, $2, $3); }
@@ -129,6 +130,7 @@ ParamDec: Specifier VarDec { $$ = create_syn_node("ParamDec", @$.first_line, ENU
 
 /* Statements */
 CompSt: '{' DefList StmtList '}' { $$ = create_syn_node("CompSt", @$.first_line, ENUM_ERROR, 4, $1, $2, $3, $4); }
+    | error ';' { syn_error_cnt++; }
 ;
 
 StmtList: Stmt StmtList { $$ = create_syn_node("StmtList", @$.first_line, ENUM_ERROR, 2, $1, $2); }
@@ -151,6 +153,7 @@ DefList: Def DefList { $$ = create_syn_node("DefList", @$.first_line, ENUM_ERROR
 ;
 
 Def: Specifier DecList ';' { $$ = create_syn_node("Def", @$.first_line, ENUM_ERROR, 3, $1, $2, $3); }
+    | Specifier error ';' { syn_error_cnt++; }
 ;
 
 DecList: Dec { $$ = create_syn_node("DecList", @$.first_line, ENUM_ERROR, 1, $1); }
