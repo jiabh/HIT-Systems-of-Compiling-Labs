@@ -3,6 +3,7 @@
 !*.*
 !*/
 !Makefile
+!LICENSE
 
 # 忽略中间文件
 *.output
