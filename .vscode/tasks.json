@@ -4,6 +4,48 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Build C--parser",
+            "detail": "编译生成C--parser",
+            "command": "make",
+            "args": [
+                "parser"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                { // bison matcher
+                    "owner": "y",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceRoot}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+).(\\d+)-\\d+:\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "message": 4
+                    }
+                },
+                { // flex matcher
+                    "owner": "l",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceRoot}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "message": 3
+                    }
+                },
+                "$gcc"
+            ]
+        },
+        {
             "label": "Build C--parser(debug)",
             "detail": "编译生成C--parser(debug)",
             "command": "make",
@@ -60,6 +102,19 @@
             "problemMatcher": [
                 "$gcc"
             ],
-        }
+        },
+        {
+            "label": "Clean",
+            "detail": "删除生成的文件",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "clean"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
     ]
 }

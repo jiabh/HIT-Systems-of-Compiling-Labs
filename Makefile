@@ -29,9 +29,9 @@ parser-debug:
 	$(call echo_info,"Generating syntax analyzer...")
 	$(BISON) -d -t -v C--syntax.y
 	$(call echo_info,"Generating lexical analyzer...")
-	$(FLEX) -d -o C--lexical.yy.c C--lexical.l
+	$(FLEX) -o C--lexical.yy.c C--lexical.l
 	$(call echo_info,"GCC compiling...")
-	$(CC) $(FLEX_CFLAGS) -D DEBUG -D YYDEBUG=0 \
+	$(CC) $(FLEX_CFLAGS) -D DEBUG -D YYDEBUG=1 \
 		-o C--parser-debug main.c C--syntax.tab.c syntax_tree.c
 	$(call echo_success,"Done.")
 

@@ -112,7 +112,7 @@ Tag: ID { $$ = create_syn_node("Tag", @$.first_line, ENUM_ERROR, 1, $1); }
 /* Declarators */
 VarDec: ID { $$ = create_syn_node("VarDec", @$.first_line, ENUM_ERROR, 1, $1); }
     | VarDec '[' INT ']' { $$ = create_syn_node("VarDec", @$.first_line, ENUM_ERROR, 4, $1, $2, $3, $4); }
-    | error ']' {;}
+    | error ']' { syn_error_cnt++; }
 ;
 
 FunDec: ID '(' VarList ')' { $$ = create_syn_node("FunDec", @$.first_line, ENUM_ERROR, 4, $1, $2, $3, $4); }
@@ -141,6 +141,7 @@ Stmt: Exp ';' { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 2, $1, $
     | IF '(' Exp ')' Stmt  %prec LOWER_THAN_ELSE { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 5, $1, $2, $3, $4, $5); }
     | IF '(' Exp ')' Stmt ELSE Stmt { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 7, $1, $2, $3, $4, $5, $6, $7); }
     | WHILE '(' Exp ')' Stmt { $$ = create_syn_node("Stmt", @$.first_line, ENUM_ERROR, 5, $1, $2, $3, $4, $5); }
+    | Exp error ';' { syn_error_cnt++; }
 ;
 
 

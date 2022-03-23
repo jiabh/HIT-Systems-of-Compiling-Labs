@@ -3,6 +3,8 @@
 
 extern SyntaxNode *root;
 
+extern int yydebug; // Bison debug flag
+
 extern int yylineno;
 extern int yyparse();
 extern void yyrestart(FILE *);
@@ -26,6 +28,10 @@ int main(int argc, char **argv)
     }
 
     yyrestart(f);
+
+#ifdef DEBUG
+    yydebug = 1;
+#endif
     yyparse();
 
 #ifndef DEBUG
