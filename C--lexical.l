@@ -82,7 +82,7 @@ ELSE else
 WHILE while
 
 /* 以下终结符的定义需要自己编写 */
-INT 0|[1-9]{dight}*
+INT 0|[1-9]{dight}*|0x[0-9a-fA-F]+|0[0-7]*
 FLOAT {dight}+"."{dight}+|{dight}*"."{dight}+[Ee][+-]?{dight}+|{dight}+"."{dight}*[Ee][+-]?{dight}+
 ID {letter}({dight}|{letter})*
 
@@ -168,7 +168,7 @@ ID {letter}({dight}|{letter})*
 {INT} {
     printf_lexical_debug("INT");
     CREATE_TOKEN_NODE("INT", yylloc.first_line, ENUM_INT)
-    yylval.node->intval = atoi(yytext);
+    yylval.node->intval = strtol(yytext, NULL, 0);
     return INT;
 }
 
