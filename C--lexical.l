@@ -86,6 +86,10 @@ INT 0|[1-9]{dight}*|0x[0-9a-fA-F]+|0[0-7]*
 FLOAT {dight}+"."{dight}+|{dight}*"."{dight}+[Ee][+-]?{dight}+|{dight}+"."{dight}*[Ee][+-]?{dight}+
 ID {letter}({dight}|{letter})*
 
+SL_COMMENT \/\/.*?\n
+/* 多行注释的正则表达式参考自：https://stackoverflow.com/a/32320759 */
+ML_COMMENT \/\*([^*]|(\*+[^*/]))*\*+\/
+
 %%
 
 {ws} { /* 空白符忽略 */ }
@@ -184,6 +188,14 @@ ID {letter}({dight}|{letter})*
     CREATE_TOKEN_NODE("ID", yylloc.first_line, ENUM_ID)
     strcpy(yylval.node->strval, yytext);
     return ID;
+}
+
+{SL_COMMENT} {
+    printf_lexical_debug("SINGLE LINE COMMENT");
+}
+
+{ML_COMMENT} {
+    printf_lexical_debug("MULTI LINE COMMENT");
 }
 
 \n {

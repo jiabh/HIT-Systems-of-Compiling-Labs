@@ -71,6 +71,8 @@
                 "test-res/1.6.c",
                 "test-res/1.7.c",
                 "test-res/1.8.c",
+                "test-res/1.9.c",
+                "test-res/1.10.c",
             ],
             "default": "custom-input"
         }
